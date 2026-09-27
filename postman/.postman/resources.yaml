@@ -1,0 +1,9 @@
+# Use this workspace to collaborate
+workspace:
+  id: ""
+
+localResources:
+  collections:
+    - ../Biblioteca.postman_collection.json
+  environments:
+    - ../Local.postman_environment.json
