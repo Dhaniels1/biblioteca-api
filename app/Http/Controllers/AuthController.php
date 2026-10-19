@@ -13,6 +13,10 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request): JsonResponse
     {
+        if (! config('biblioteca.public_registration')) {
+            return response()->json(['message' => 'Cadastro público desabilitado.'], 403);
+        }
+
         $user = User::create($request->validated());
 
         return $this->token($user, 201);
