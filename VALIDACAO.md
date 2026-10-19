@@ -15,6 +15,7 @@ A versão atual possui testes de integração para:
 - registro de usuário;
 - login válido;
 - login inválido retornando HTTP 401;
+- bloqueio de cadastro público quando desabilitado por configuração;
 - uso de token Sanctum;
 - logout e revogação do token;
 - execução repetida do seeder.
@@ -55,6 +56,9 @@ Como a versão atual recebeu alterações posteriores, o resultado definitivo de
 - Testes automatizados: configurados.
 - CI com SQLite + MySQL: configurado.
 - Coleção Postman: disponível.
+- Arquivos de Docker para deploy: configurados, ainda sem build remoto verificado.
 - Publicação da API em URL externa: pendente.
 
-A publicação externa é a principal etapa que ainda precisa ser concluída para atender integralmente ao enunciado.
+A publicação externa é a principal etapa que ainda precisa ser concluída para atender integralmente ao enunciado. O workflow do CI foi configurado, mas seu resultado na versão mais recente ainda precisa ser conferido no GitHub Actions. O Dockerfile também precisa de um primeiro build antes de ser considerado validado.
+
+O guia de publicação encontra-se em [DEPLOY.md](DEPLOY.md).
