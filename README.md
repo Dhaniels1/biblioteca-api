@@ -284,7 +284,7 @@ Isso permite verificar tanto a lógica da aplicação quanto a compatibilidade c
 
 ## Publicação externa
 
-A URL pública de produção ainda não foi provisionada.
+A URL pública de produção ainda não foi provisionada. Há um [guia de publicação com Docker e Render](DEPLOY.md), incluindo requisitos, configurações, segurança e limitações do plano gratuito. O repositório inclui Dockerfile e script de inicialização.
 
 Para produção, o servidor deve utilizar PHP 8.2+, Composer e MySQL/MariaDB. A raiz pública deve apontar exclusivamente para a pasta `public/`.
 
