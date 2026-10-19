@@ -56,9 +56,11 @@ Como a versão atual recebeu alterações posteriores, o resultado definitivo de
 - Testes automatizados: configurados.
 - CI com SQLite + MySQL: configurado.
 - Coleção Postman: disponível.
-- Arquivos de Docker para deploy: configurados, ainda sem build remoto verificado.
-- Publicação da API em URL externa: pendente.
+- Docker: build remoto concluído com sucesso no Render em 19/10/2026.
+- Serviço web publicado: https://biblioteca-api-dhaniels1.onrender.com — deploy **live** confirmado.
+- PostgreSQL: disponível; criação e migrations das tabelas concluídas nos logs do Render.
+- Testes HTTP externos específicos de `/api/livros`, `/api/autores` e `/api/categorias`: ainda pendentes de verificação por cliente externo.
 
-A publicação externa é a principal etapa que ainda precisa ser concluída para atender integralmente ao enunciado. O workflow do CI foi configurado, mas seu resultado na versão mais recente ainda precisa ser conferido no GitHub Actions. O Dockerfile também precisa de um primeiro build antes de ser considerado validado.
+O Render confirmou build Docker bem-sucedido, deploy ativo e execução das migrations de `users`, `cache`, `jobs`, `autor`, `categoria`, `livro` e `personal_access_tokens`. A rota raiz `/` respondeu HTTP 200 durante a checagem do Render. A consulta direta das rotas da API por um cliente externo ainda não foi confirmada nesta revisão. O workflow do CI com SQLite e MySQL está configurado, mas seus resultados devem ser conferidos no GitHub Actions.
 
 O guia de publicação encontra-se em [DEPLOY.md](DEPLOY.md).
