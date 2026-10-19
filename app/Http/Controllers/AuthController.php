@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -22,8 +21,9 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $user = User::where('email', $request->validated('email'))->first();
+
         if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
-            throw ValidationException::withMessages(['email' => ['Credenciais inválidas.']]);
+            return response()->json(['message' => 'Credenciais inválidas.'], 401);
         }
 
         return $this->token($user);
@@ -31,7 +31,11 @@ class AuthController extends Controller
 
     private function token(User $user, int $status = 200): JsonResponse
     {
-        return response()->json(['user' => $user, 'token_type' => 'Bearer', 'token' => $user->createToken('postman', ['*'], now()->addDays(7))->plainTextToken], $status);
+        return response()->json([
+            'user' => $user,
+            'token_type' => 'Bearer',
+            'token' => $user->createToken('api', ['*'], now()->addDays(7))->plainTextToken,
+        ], $status);
     }
 
     public function me(Request $request): JsonResponse
