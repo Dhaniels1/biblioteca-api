@@ -273,6 +273,17 @@ Selecione o ambiente **Biblioteca Local** e execute a coleção na ordem definid
 
 O fluxo cadastra usuário, autentica, cria autor/categoria/livro, consulta os dados, atualiza registros, verifica validações e conflitos, remove os dados criados, realiza logout e verifica a revogação do token. Execute o fluxo completo em ambiente local/de testes, pois o cadastro público fica desabilitado por padrão em produção.
 
+### Verificação segura da API publicada
+
+Para testar a implantação no Render sem modificar o banco nem abrir o cadastro público, importe:
+
+- `postman/Biblioteca-Producao.postman_collection.json`
+- `postman/Render.postman_environment.json`
+
+Selecione **Biblioteca - Render (produção)** e execute a coleção de cima para baixo no Collection Runner. São sete requisições que verificam listagens, relações autor/categoria, consulta por ID e as proteções HTTP 401/403. As requisições POST dessa coleção usam acesso anônimo e **devem ser negadas**, sem inserir registros.
+
+O CRUD autenticado completo continua coberto pelos testes Laravel e pela coleção local. Para executá-lo no Render, é necessário configurar uma conta autorizada de modo seguro; não habilite o cadastro público de produção apenas para testes.
+
 ## Testes automatizados
 
 Para executar localmente:
