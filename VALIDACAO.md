@@ -18,7 +18,8 @@ A versão atual possui testes de integração para:
 - bloqueio de cadastro público quando desabilitado por configuração;
 - uso de token Sanctum;
 - logout e revogação do token;
-- execução repetida do seeder.
+- execução repetida do seeder básico;
+- carga demonstrativa com `CatalogoDemoSeeder`, incluindo relacionamentos e verificação de ausência de duplicatas.
 
 ## Integração contínua
 
@@ -56,6 +57,7 @@ Como a versão atual recebeu alterações posteriores, o resultado definitivo de
 - Testes automatizados: configurados.
 - CI com SQLite + MySQL: configurado.
 - Coleção Postman: disponível.
+- Catálogo de demonstração: 4 autores, 3 categorias, 7 livros; carga controlada por `SEED_DEMO_CATALOG=true` no Render.
 - Docker: build remoto concluído com sucesso no Render em 19/10/2026.
 - Serviço web publicado: https://biblioteca-api-dhaniels1.onrender.com — deploy **live** confirmado.
 - PostgreSQL: disponível; criação e migrations das tabelas concluídas nos logs do Render.
