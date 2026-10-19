@@ -10,4 +10,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan migrate --force
 
+if [ "${SEED_DEMO_CATALOG:-false}" = "true" ]; then
+    php artisan db:seed --class=CatalogoDemoSeeder --force
+fi
+
 exec apache2-foreground
