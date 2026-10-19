@@ -50,7 +50,10 @@ jobs:
           DB_DATABASE: biblioteca_api_test
           DB_USERNAME: root
           DB_PASSWORD: root
-        run: php artisan test
+        run: |
+          php artisan config:clear
+          php artisan migrate:fresh --force
+          php artisan test
 
       - name: Verificar formatação
         run: vendor/bin/pint --test
