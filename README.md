@@ -97,6 +97,18 @@ http://127.0.0.1:8000/api
 
 Para iniciar com banco vazio, execute `php artisan migrate` sem `--seed`.
 
+### Catálogo de demonstração
+
+Existe também o seeder independente `CatalogoDemoSeeder`, que adiciona **4 autores, 3 categorias e 7 livros**. Os relacionamentos de autor e categoria são criados automaticamente, e o seeder pode ser executado várias vezes sem duplicar dados (utiliza `firstOrCreate`).
+
+```bash
+php artisan db:seed --class=CatalogoDemoSeeder
+```
+
+No Render, a carga é habilitada por `SEED_DEMO_CATALOG=true` no ambiente do serviço. A inicialização executa o seeder após as migrations. Retire ou configure `SEED_DEMO_CATALOG=false` se não desejar repovoar dados demonstrativos em futuras reinicializações.
+
+**Os ISBNs gerados para demonstração são fictícios** (exceto o exemplo inicial de Dom Casmurro) e a quantidade de páginas é ilustrativa, sem representar uma edição comercial específica.
+
 ## Modelo de dados
 
 Os nomes e comprimentos principais seguem o diagrama fornecido no trabalho.
@@ -276,7 +288,7 @@ Isso permite verificar tanto a lógica da aplicação quanto a compatibilidade c
 - `app/Http/Controllers`: CRUD e autenticação.
 - `app/Http/Requests`: validação dos dados.
 - `database/migrations`: estrutura do banco.
-- `database/seeders`: dados opcionais de demonstração.
+- `database/seeders`: seeder básico e `CatalogoDemoSeeder`, com 4 autores, 3 categorias e 7 livros demonstrativos.
 - `routes/api.php`: rotas REST públicas e autenticadas.
 - `tests/Feature/BibliotecaTest.php`: testes de integração.
 - `postman`: coleção e ambiente para testes manuais.
@@ -286,7 +298,7 @@ Isso permite verificar tanto a lógica da aplicação quanto a compatibilidade c
 
 O serviço está publicado em **https://biblioteca-api-dhaniels1.onrender.com** no plano gratuito do Render, utilizando Docker e PostgreSQL 16. O build, o deploy, as migrations e a resposta HTTP 200 da rota inicial foram confirmados nos logs do Render em 19/10/2026. Verifique os endpoints em um navegador ou no Postman para completar a conferência externa. Veja [DEPLOY.md](DEPLOY.md) para configuração, segurança, limitações e procedimentos.
 
-Para produção, o servidor deve utilizar PHP 8.2+, Composer e MySQL/MariaDB. A raiz pública deve apontar exclusivamente para a pasta `public/`.
+Para produção, o servidor deve utilizar PHP 8.2+, Composer e um banco compatível (MySQL/MariaDB ou PostgreSQL). A raiz pública deve apontar exclusivamente para a pasta `public/`.
 
 Fluxo básico:
 
