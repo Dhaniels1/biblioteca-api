@@ -20,9 +20,9 @@ A aplicação disponibiliza CRUD de autores, categorias e livros, relacionamento
 - [x] Coleção Postman.
 - [x] CI no GitHub Actions com SQLite e MySQL.
 - [x] Código publicado no GitHub.
-- [ ] URL pública de produção.
+- [x] Serviço público implantado no Render (deploy ativo; confirmação HTTP completa dos endpoints ainda pendente).
 
-> A publicação externa ainda é a principal etapa pendente para cumprir integralmente a exigência de acesso externo do enunciado.
+> URL do serviço: https://biblioteca-api-dhaniels1.onrender.com. O Render confirmou deploy ativo, conexão ao PostgreSQL e execução das migrations. Ainda falta confirmar diretamente a resposta HTTP das rotas /api/ em um cliente externo.
 
 ## Requisitos
 
@@ -284,7 +284,7 @@ Isso permite verificar tanto a lógica da aplicação quanto a compatibilidade c
 
 ## Publicação externa
 
-A URL pública de produção ainda não foi provisionada. Há um [guia de publicação com Docker e Render](DEPLOY.md), incluindo requisitos, configurações, segurança e limitações do plano gratuito. O repositório inclui Dockerfile e script de inicialização.
+O serviço está publicado em **https://biblioteca-api-dhaniels1.onrender.com** no plano gratuito do Render, utilizando Docker e PostgreSQL 16. O build, o deploy, as migrations e a resposta HTTP 200 da rota inicial foram confirmados nos logs do Render em 19/10/2026. Verifique os endpoints em um navegador ou no Postman para completar a conferência externa. Veja [DEPLOY.md](DEPLOY.md) para configuração, segurança, limitações e procedimentos.
 
 Para produção, o servidor deve utilizar PHP 8.2+, Composer e MySQL/MariaDB. A raiz pública deve apontar exclusivamente para a pasta `public/`.
 
@@ -308,10 +308,10 @@ API_ALLOW_PUBLIC_REGISTRATION=false
 
 **Segurança do cadastro:** em produção o cadastro público fica desabilitado por padrão, para evitar que qualquer visitante obtenha autorização de escrita após criar uma conta. Crie previamente uma conta de confiança diretamente no ambiente da aplicação (por exemplo, pelo Tinker, com senha forte e não versionada). O login permanece disponível. Só ative `API_ALLOW_PUBLIC_REGISTRATION=true` se você aceitar explicitamente que novas contas também possam alterar/excluir o catálogo. Após qualquer alteração no `.env` em produção, atualize o cache com `php artisan config:cache`.
 
-Depois da publicação, deve-se validar de outra rede:
+Para completar a verificação funcional, consulte de outra rede:
 
 ```text
-GET https://seu-dominio/api/livros
+GET https://biblioteca-api-dhaniels1.onrender.com/api/livros
 ```
 
 e também o fluxo de registro/login e escrita autenticada.
