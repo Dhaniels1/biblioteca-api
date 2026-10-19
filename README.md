@@ -121,7 +121,7 @@ Para pontos não detalhados explicitamente no enunciado, foram adotadas as segui
 
 - consultas GET são públicas;
 - POST, PUT e DELETE exigem autenticação;
-- registro e login são públicos para permitir o teste do mecanismo de autenticação;
+- login é público; o cadastro é público apenas em desenvolvimento/testes por padrão e pode ser desabilitado em qualquer ambiente;
 - ISBN é único;
 - páginas devem ser positivas;
 - ano de publicação deve estar entre 1 e 9999;
@@ -152,7 +152,7 @@ Base local: `http://127.0.0.1:8000/api`.
 | POST | /livros | Token | Cria livro |
 | PUT | /livros/{id} | Token | Atualiza livro |
 | DELETE | /livros/{id} | Token | Exclui livro |
-| POST | /register | Público | Registra usuário e emite token |
+| POST | /register | Configurável | Registra usuário e emite token (desabilitado por padrão em produção) |
 | POST | /login | Público | Autentica e emite token |
 | GET | /user | Token | Retorna o usuário autenticado |
 | POST | /logout | Token | Revoga o token atual |
@@ -177,6 +177,7 @@ Content-Type: application/json
 | 200 | Consulta, atualização ou exclusão bem-sucedida |
 | 201 | Cadastro realizado |
 | 401 | Token ausente/inválido ou credenciais incorretas |
+| 403 | Cadastro público desabilitado |
 | 404 | Registro inexistente |
 | 409 | Conflito de integridade relacional |
 | 422 | Dados de entrada inválidos |
@@ -249,7 +250,7 @@ Importe:
 
 Selecione o ambiente **Biblioteca Local** e execute a coleção na ordem definida.
 
-O fluxo cadastra usuário, autentica, cria autor/categoria/livro, consulta os dados, atualiza registros, verifica validações e conflitos, remove os dados criados, realiza logout e verifica a revogação do token.
+O fluxo cadastra usuário, autentica, cria autor/categoria/livro, consulta os dados, atualiza registros, verifica validações e conflitos, remove os dados criados, realiza logout e verifica a revogação do token. Execute o fluxo completo em ambiente local/de testes, pois o cadastro público fica desabilitado por padrão em produção.
 
 ## Testes automatizados
 
@@ -262,7 +263,7 @@ vendor/bin/pint --test
 
 Por padrão, a suíte local utiliza SQLite em memória para manter os testes rápidos e isolados.
 
-O GitHub Actions executa a suíte duas vezes:
+O GitHub Actions está configurado para executar a suíte duas vezes:
 
 1. SQLite em memória.
 2. MySQL 8.4 em um serviço isolado do CI.
@@ -302,7 +303,10 @@ Configurações mínimas esperadas no ambiente:
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://seu-dominio
+API_ALLOW_PUBLIC_REGISTRATION=false
 ```
+
+**Segurança do cadastro:** em produção o cadastro público fica desabilitado por padrão, para evitar que qualquer visitante obtenha autorização de escrita após criar uma conta. Crie previamente uma conta de confiança diretamente no ambiente da aplicação (por exemplo, pelo Tinker, com senha forte e não versionada). O login permanece disponível. Só ative `API_ALLOW_PUBLIC_REGISTRATION=true` se você aceitar explicitamente que novas contas também possam alterar/excluir o catálogo. Após qualquer alteração no `.env` em produção, atualize o cache com `php artisan config:cache`.
 
 Depois da publicação, deve-se validar de outra rede:
 
@@ -319,6 +323,7 @@ e também o fluxo de registro/login e escrita autenticada.
 - **Access denied / Connection refused**: confira MySQL, porta, usuário e senha.
 - **No application encryption key**: execute `php artisan key:generate`.
 - **401 no login**: confira e-mail e senha.
+- **403 em /api/register**: o cadastro público está desabilitado neste ambiente.
 - **401 em rota protegida**: faça login e envie o token Bearer.
 - **409 ao excluir**: há livros vinculados ao autor ou categoria.
 - **422 ao atualizar**: PUT exige todos os campos do recurso.
