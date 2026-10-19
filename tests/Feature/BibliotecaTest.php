@@ -118,6 +118,24 @@ class BibliotecaTest extends TestCase
         $this->getJson('/api/user', $headers)->assertUnauthorized();
     }
 
+    public function test_cadastro_publico_pode_ser_desativado(): void
+    {
+        config()->set('biblioteca.public_registration', false);
+
+        $payload = [
+            'name' => 'Visitante',
+            'email' => 'visitante@example.com',
+            'password' => 'SenhaTeste123!',
+            'password_confirmation' => 'SenhaTeste123!',
+        ];
+
+        $this->postJson('/api/register', $payload)
+            ->assertForbidden()
+            ->assertExactJson(['message' => 'Cadastro público desabilitado.']);
+
+        $this->assertDatabaseCount('users', 0);
+    }
+
     public function test_seed_pode_ser_repetido(): void
     {
         $this->seed();
