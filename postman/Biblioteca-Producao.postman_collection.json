@@ -1,0 +1,238 @@
+{
+  "info": {
+    "name": "Biblioteca API - verificacao segura de producao",
+    "description": "Apenas consultas e testes de bloqueio (401/403). Não realiza operações que alterem o catálogo de produção.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Listar livros",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/livros"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });",
+              "pm.test(\"Lista de livros\", function () { pm.expect(pm.response.json()).to.be.an(\"array\"); });",
+              "pm.test(\"Livros com autor e categoria\", function () { const livros=pm.response.json(); pm.expect(livros.length).to.be.above(0); livros.forEach(function(l) {pm.expect(l).to.have.property(\"idlivro\"); pm.expect(l.autor).to.be.an(\"object\"); pm.expect(l.categoria).to.be.an(\"object\");}); });",
+              "if (pm.response.json().length) pm.environment.set(\"idlivro_demo\", pm.response.json()[0].idlivro);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Listar autores",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/autores"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });",
+              "pm.test(\"Lista de autores\", function () { const data=pm.response.json(); pm.expect(data).to.be.an(\"array\"); pm.expect(data.length).to.be.above(0); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Listar categorias",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/categorias"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });",
+              "pm.test(\"Lista de categorias\", function () { const data=pm.response.json(); pm.expect(data).to.be.an(\"array\"); pm.expect(data.length).to.be.above(0); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Consultar livro individual",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/livros/{{idlivro_demo}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });",
+              "pm.test(\"Dados do livro e relacionamento\", function () { const l=pm.response.json(); pm.expect(l).to.have.property(\"idlivro\");pm.expect(l.autor).to.be.an(\"object\");pm.expect(l.categoria).to.be.an(\"object\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Bloqueio de usuario anonimo",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/user"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Bloqueio de escrita anonima",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/livros",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Teste sem token\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Cadastro publico desabilitado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": "{{base_url}}/api/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Teste publico\",\n  \"email\": \"exemplo.nao.salvar@example.com\",\n  \"password\": \"SenhaExemplo123!\",\n  \"password_confirmation\": \"SenhaExemplo123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", function () { pm.response.to.have.status(403); });",
+              "pm.test(\"Resposta JSON\", function () { pm.response.to.be.json; });",
+              "pm.test(\"Cadastro bloqueado\", function () {pm.expect(pm.response.json().message).to.eql(\"Cadastro público desabilitado.\");});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
