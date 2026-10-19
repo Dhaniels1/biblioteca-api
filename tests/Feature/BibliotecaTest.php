@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Autor;
 use App\Models\Categoria;
 use App\Models\User;
+use Database\Seeders\CatalogoDemoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -134,6 +135,22 @@ class BibliotecaTest extends TestCase
             ->assertExactJson(['message' => 'Cadastro público desabilitado.']);
 
         $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_catalogo_demo_tem_relacoes_e_nao_gera_duplicatas(): void
+    {
+        $this->seed(CatalogoDemoSeeder::class);
+        $this->seed(CatalogoDemoSeeder::class);
+
+        $this->assertDatabaseCount('autor', 4);
+        $this->assertDatabaseCount('categoria', 3);
+        $this->assertDatabaseCount('livro', 7);
+
+        $this->getJson('/api/livros')
+            ->assertOk()
+            ->assertJsonCount(7)
+            ->assertJsonPath('0.autor.nome', 'Machado de Assis')
+            ->assertJsonPath('0.categoria.nome', 'Romance');
     }
 
     public function test_seed_pode_ser_repetido(): void
