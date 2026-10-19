@@ -12,7 +12,8 @@ Durante a inicialização o contêiner:
 2. executa `php artisan config:cache`;
 3. executa `php artisan route:cache`;
 4. aplica as migrations pendentes com `php artisan migrate --force`;
-5. inicia o Apache.
+5. executa `CatalogoDemoSeeder` se `SEED_DEMO_CATALOG=true`;
+6. inicia o Apache.
 
 A imagem **não** contém senha, token ou arquivo `.env` real.
 
@@ -33,6 +34,7 @@ APP_DEBUG=false
 APP_URL=https://biblioteca-api-dhaniels1.onrender.com
 APP_KEY=base64:CHAVE_GERADA_FORA_DO_REPOSITORIO
 API_ALLOW_PUBLIC_REGISTRATION=false
+SEED_DEMO_CATALOG=true
 ```
 
 **Não copie o valor de APP_KEY acima literalmente.** Gere uma chave real em um ambiente confiável com `php artisan key:generate --show` e salve-a como segredo no Render. Preserve a mesma chave em atualizações.
@@ -46,9 +48,10 @@ DB_URL=postgresql://USUARIO:SENHA@HOST:5432/BANCO
 
 Também é possível configurar `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` e `DB_PASSWORD` separadamente. Use apenas credenciais do banco configurado no serviço.
 
-5. Configure a rota `/up` como health check, se desejar.
-6. Aguarde o build e o deploy do serviço. Se houver erro, verifique os logs do deploy.
-7. Verifique `GET https://biblioteca-api-dhaniels1.onrender.com/api/livros` em uma rede externa e confirme que o resultado é JSON.
+5. Configure `SEED_DEMO_CATALOG=true` somente se quiser os 4 autores, 3 categorias e 7 livros de demonstração. O comando `php artisan db:seed --class=CatalogoDemoSeeder --force` executa após as migrations e não duplica registros existentes. Desabilite a variável depois da primeira carga caso não queira que itens removidos sejam recriados em futuros deploys.
+6. Configure a rota `/up` como health check, se desejar.
+7. Aguarde o build e o deploy do serviço. Se houver erro, verifique os logs do deploy.
+8. Verifique `GET https://biblioteca-api-dhaniels1.onrender.com/api/livros` em uma rede externa e confirme que o resultado é JSON.
 
 ## Segurança
 
