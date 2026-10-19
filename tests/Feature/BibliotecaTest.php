@@ -26,6 +26,17 @@ class BibliotecaTest extends TestCase
             'idcategoria' => Categoria::create(['nome' => 'Romance', 'descricao' => 'Ficção.'])->idcategoria];
     }
 
+    public function test_pagina_inicial_exibe_catalogo_visual(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Explore nossa biblioteca')
+            ->assertSee('id="results"', false)
+            ->assertSee('/api/livros')
+            ->assertSee('/api/autores')
+            ->assertSee('/api/categorias');
+    }
+
     public function test_consultas_publicas_e_escritas_protegidas(): void
     {
         foreach (['autores', 'categorias', 'livros'] as $uri) {
