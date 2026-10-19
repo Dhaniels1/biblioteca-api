@@ -20,9 +20,10 @@ A aplicação disponibiliza CRUD de autores, categorias e livros, relacionamento
 - [x] Coleção Postman.
 - [x] CI no GitHub Actions com SQLite e MySQL.
 - [x] Código publicado no GitHub.
-- [x] Serviço público implantado no Render (deploy ativo; confirmação HTTP completa dos endpoints ainda pendente).
+- [x] Serviço público implantado no Render.
+- [x] Interface visual pública do catálogo (consulta, busca, filtros, autores e categorias).
 
-> URL do serviço: https://biblioteca-api-dhaniels1.onrender.com. O Render confirmou deploy ativo, conexão ao PostgreSQL e execução das migrations. Ainda falta confirmar diretamente a resposta HTTP das rotas /api/ em um cliente externo.
+> Acesse o catálogo visual em https://biblioteca-api-dhaniels1.onrender.com e as respostas JSON em https://biblioteca-api-dhaniels1.onrender.com/api/livros. O deploy, banco e migrations foram confirmados no Render.
 
 ## Requisitos
 
@@ -142,6 +143,14 @@ Para pontos não detalhados explicitamente no enunciado, foram adotadas as segui
 - PUT exige o objeto completo;
 - tokens expiram em 7 dias;
 - login e registro possuem limite de 10 requisições por minuto por IP.
+
+## Interface visual (leitura pública)
+
+Abra **https://biblioteca-api-dhaniels1.onrender.com** para consultar a biblioteca sem precisar interpretar JSON. A página foi feita com Blade, CSS e JavaScript puro, sem dependências de frontend nem alterações nos endpoints exigidos no exercício.
+
+A interface inclui busca por título, autor ou ISBN, filtro por categoria, ordenação por título ou ano, detalhamento dos livros, listas de autores e categorias e indicadores do acervo. É responsiva para computador, tablet e celular. A interface consulta os endpoints `/api/livros`, `/api/autores` e `/api/categorias`.
+
+**A página é apenas de consulta:** operações de POST, PUT e DELETE continuam restritas a usuários autenticados no Laravel Sanctum. Para demonstrar o CRUD, use a coleção do Postman em ambiente de teste com cadastro habilitado.
 
 ## Endpoints
 
@@ -290,6 +299,7 @@ Isso permite verificar tanto a lógica da aplicação quanto a compatibilidade c
 - `database/migrations`: estrutura do banco.
 - `database/seeders`: seeder básico e `CatalogoDemoSeeder`, com 4 autores, 3 categorias e 7 livros demonstrativos.
 - `routes/api.php`: rotas REST públicas e autenticadas.
+- `routes/web.php` e `resources/views/catalogo.blade.php`: interface visual independente da API.
 - `tests/Feature/BibliotecaTest.php`: testes de integração.
 - `postman`: coleção e ambiente para testes manuais.
 - `.github/workflows/tests.yml`: integração contínua.
