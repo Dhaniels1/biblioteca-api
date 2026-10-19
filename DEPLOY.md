@@ -1,6 +1,6 @@
 # Publicação da Biblioteca API
 
-Este documento descreve uma opção de publicação da aplicação com **Docker + Render**. O código do repositório já contém `Dockerfile`, `.dockerignore` e `docker/start.sh`; criar esses arquivos **não** significa que o serviço está publicado.
+O serviço foi publicado no plano gratuito do **Render** com Docker e PostgreSQL 16 em 19/10/2026. Endereço: https://biblioteca-api-dhaniels1.onrender.com. O deploy foi marcado como **live** e as migrations foram concluídas; os testes externos dos endpoints da API devem ser confirmados em um cliente HTTP.
 
 ## Como a imagem funciona
 
@@ -30,7 +30,7 @@ Exemplo de variáveis gerais:
 ```dotenv
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://URL-REAL-DO-SEU-SERVICO.onrender.com
+APP_URL=https://biblioteca-api-dhaniels1.onrender.com
 APP_KEY=base64:CHAVE_GERADA_FORA_DO_REPOSITORIO
 API_ALLOW_PUBLIC_REGISTRATION=false
 ```
@@ -48,7 +48,7 @@ Também é possível configurar `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAM
 
 5. Configure a rota `/up` como health check, se desejar.
 6. Aguarde o build e o deploy do serviço. Se houver erro, verifique os logs do deploy.
-7. Verifique `GET https://URL-REAL-DO-SEU-SERVICO.onrender.com/api/livros` em uma rede externa e confirme que o resultado é JSON.
+7. Verifique `GET https://biblioteca-api-dhaniels1.onrender.com/api/livros` em uma rede externa e confirme que o resultado é JSON.
 
 ## Segurança
 
@@ -62,7 +62,7 @@ Para demonstrações locais, o cadastro permanece habilitado por padrão; nesse 
 
 - O Render não oferece runtime PHP nativo; por isso, utiliza-se Docker.
 - Serviços web gratuitos não oferecem acesso SSH/Shell, o que dificulta provisionar uma conta inicial de confiança por linha de comando.
-- Se optar pelo PostgreSQL gratuito do próprio Render, o banco expira **30 dias após a criação** segundo a documentação do provedor.
+- O PostgreSQL gratuito provisionado para este projeto tem vencimento indicado pelo Render em **18/11/2026**. Planeje exportar/migrar os dados antes dessa data.
 - A aplicação precisa de um banco persistente; gravar o catálogo apenas no sistema de arquivos efêmero do contêiner não é adequado.
 
 Antes de criar recursos, confirme os limites e custos atuais do plano escolhido. Para uma publicação duradoura, considere uma hospedagem com banco persistente e acesso administrativo.
@@ -83,4 +83,4 @@ php artisan migrate:status
 
 ## Estado
 
-Os arquivos de Docker estão versionados no GitHub. O **build da imagem, o deploy remoto e o teste de ponta a ponta em um servidor público** ainda devem ser confirmados. Atualize este documento e o README com a URL real somente depois que a publicação funcionar.
+**Verificações feitas:** build da imagem concluído, deploy remoto ativo e migrations aplicadas ao PostgreSQL. O Render registrou HTTP 200 para a rota `/`. **Pendente:** testar diretamente os endpoints da API por um cliente externo e executar o fluxo completo de requisições no Postman. O login e a escrita exigem uma conta autorizada; o cadastro público está bloqueado por padrão em produção.
