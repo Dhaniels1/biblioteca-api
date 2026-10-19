@@ -7,7 +7,7 @@ RUN apt-get update \
 
 RUN a2enmod rewrite \
     && sed -ri 's/Listen 80/Listen 10000/' /etc/apache2/ports.conf \
-    && sed -ri 's/<VirtualHost \\*:80>/<VirtualHost *:10000>/' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/:80>/:10000>/' /etc/apache2/sites-available/000-default.conf \
     && sed -ri 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/public!' /etc/apache2/sites-available/000-default.conf \
     && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' > /etc/apache2/conf-available/biblioteca.conf \
     && a2enconf biblioteca
