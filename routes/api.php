@@ -10,15 +10,32 @@ Route::middleware('throttle:10,1')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 });
-foreach (['autores' => [AutorController::class, 'autor'], 'categorias' => [CategoriaController::class, 'categoria'], 'livros' => [LivroController::class, 'livro']] as $uri => [$controller, $parameter]) {
-    Route::apiResource($uri, $controller)->parameters([$uri => $parameter])->only(['index', 'show']);
-    Route::middleware('auth:sanctum')->group(function () use ($uri, $controller, $parameter) {
-        Route::post($uri, [$controller, 'store']);
-        Route::put($uri.'/{'.$parameter.'}', [$controller, 'update']);
-        Route::delete($uri.'/{'.$parameter.'}', [$controller, 'destroy']);
-    });
-}
+
+Route::apiResource('autores', AutorController::class)
+    ->parameters(['autores' => 'autor'])
+    ->only(['index', 'show']);
+
+Route::apiResource('categorias', CategoriaController::class)
+    ->parameters(['categorias' => 'categoria'])
+    ->only(['index', 'show']);
+
+Route::apiResource('livros', LivroController::class)
+    ->parameters(['livros' => 'livro'])
+    ->only(['index', 'show']);
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('autores', AutorController::class)
+        ->parameters(['autores' => 'autor'])
+        ->only(['store', 'update', 'destroy']);
+
+    Route::apiResource('categorias', CategoriaController::class)
+        ->parameters(['categorias' => 'categoria'])
+        ->only(['store', 'update', 'destroy']);
+
+    Route::apiResource('livros', LivroController::class)
+        ->parameters(['livros' => 'livro'])
+        ->only(['store', 'update', 'destroy']);
+
     Route::get('user', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
