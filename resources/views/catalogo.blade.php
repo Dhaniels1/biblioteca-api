@@ -36,6 +36,27 @@
     @@media(max-width:700px){.app{display:block}.side{padding:12px 16px;gap:12px}.identity{padding:0}.logo{width:35px;height:35px}.identity strong{font-size:20px}.identity small{margin-top:3px}.nav-label,.side-bottom{display:none}.nav{display:flex;gap:5px;overflow-x:auto}.nav-btn{justify-content:center;padding:9px 10px;white-space:nowrap;font-size:11px}.nav-btn svg{width:15px;height:15px}.top{height:61px;padding:0 18px}.top-links{gap:6px}.top-links a{font-size:10px;padding:8px}.content{padding:27px 17px 45px}.heading{margin-bottom:23px}.heading h1{font-size:34px}.label-right{display:none}.summary{gap:8px}.stat{min-height:93px;padding:14px 11px;gap:5px}.stat-value{font-size:29px}.stat-label{font-size:10px;margin-top:8px}.stat-icon{height:32px;width:32px;border-radius:9px}.stat-icon svg{width:17px;height:17px}.section-header h2{font-size:24px}.filters{flex-wrap:wrap;padding:10px}.search{flex:1 0 100%}.filters select{max-width:none;flex:1}.books{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cover-area{height:182px;padding:19px 14px}.cover{width:110px;min-height:146px;max-height:146px;padding:16px 12px}.cover-title{font-size:15px}.cover-label,.cover-author{font-size:7px}.book-body{padding:14px 13px 16px}.book h3{font-size:17px;min-height:42px}.by{font-size:11px}.meta{font-size:10px}.people{grid-template-columns:1fr}.footer{flex-wrap:wrap}}
     @@media(max-width:400px){.books{grid-template-columns:1fr}.cover-area{height:220px}.cover{width:137px;min-height:180px;max-height:180px}.book h3{min-height:auto}.top-links a:last-child{display:none}}
     @@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+    /* Guia contextual para visitantes da demonstração */
+    .project-overview{border:1px solid #dbe3f4;border-radius:18px;background:linear-gradient(125deg,#edf3ff,#f8fbff 65%);padding:23px 25px 20px;margin:-7px 0 31px}
+    .overview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}
+    .overview-label{font-size:10px;color:#4c67a5;letter-spacing:1.5px;font-weight:800;margin:0 0 9px}
+    .overview-head h2{font:normal 24px/1.25 Georgia,serif;color:#203153;margin:0 0 8px}
+    .overview-head p{color:#596981;font-size:12px;line-height:1.65;margin:0 0 13px;max-width:730px}
+    .overview-guide{white-space:nowrap;color:#334f9e;font-size:11px;font-weight:800;border:1px solid #bfcde9;border-radius:9px;padding:11px 13px;background:#fff}
+    .overview-guide:hover{background:#e9f0ff}
+    .tour-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:6px}
+    .tour-step{background:#fff;border:1px solid #dce5f4;border-radius:12px;padding:13px 13px 14px;display:flex;gap:11px;align-items:flex-start;min-width:0}
+    .tour-step:hover{border-color:#95addf;background:#f5f8ff}
+    .tour-step .num{font-size:10px;font-weight:900;color:#3a5aaa;background:#eaf0ff;border-radius:8px;padding:7px;flex-shrink:0}
+    .tour-step strong{display:block;font-size:12px;color:#26395c;margin-bottom:4px}
+    .tour-step small{display:block;font-size:11px;line-height:1.5;color:#6a7990}
+    .api-reference{margin-top:13px;color:#566784;font-size:12px}
+    .api-reference summary{cursor:pointer;font-weight:800;color:#35529e;padding:7px 2px}
+    .api-reference p{margin:8px 0 9px;line-height:1.65}
+    .api-reference code{display:inline-block;background:#dce6fa;color:#233f86;border-radius:5px;padding:3px 6px;margin:2px 4px 2px 0;font:600 11px ui-monospace,Consolas,monospace}
+    @@media(max-width:900px){.tour-steps{grid-template-columns:1fr}.overview-head{flex-wrap:wrap}}
+    @@media(max-width:600px){.project-overview{padding:17px 15px;margin-bottom:25px}.overview-head h2{font-size:22px}.overview-guide{white-space:normal}.tour-step{padding:11px}}
   </style>
 </head>
 <body>
@@ -68,6 +89,28 @@
         <div><p class="eyebrow">Seu universo de histórias</p><h1>Explore nossa biblioteca</h1><p class="subtitle">Descubra obras, conheça os autores e navegue pelo catálogo.</p></div>
         <div class="label-right"><span class="status-dot"></span> Catálogo conectado</div>
       </div>
+
+      <section class="project-overview" aria-labelledby="overview-title">
+        <div class="overview-head">
+          <div>
+            <p class="overview-label">DEMONSTRAÇÃO ACADÊMICA · LARAVEL 12</p>
+            <h2 id="overview-title">O que você pode explorar aqui?</h2>
+            <p>Este catálogo é a interface pública de uma API REST: livros, autores e categorias são consultados diretamente pelo Laravel. Você pode navegar sem criar conta ou fornecer informações pessoais.</p>
+          </div>
+          <a class="overview-guide" href="https://github.com/Dhaniels1/biblioteca-api/blob/main/docs/GUIA_DEMONSTRACAO.md" target="_blank" rel="noopener noreferrer">Guia técnico ↗</a>
+        </div>
+        <div class="tour-steps" aria-label="Sugestões para explorar o projeto">
+          <a class="tour-step" href="#section-title"><span class="num">01</span><span><strong>Pesquise o acervo</strong><small>Experimente filtros, autores, categorias e detalhes dos livros.</small></span></a>
+          <a class="tour-step" href="/api/livros" target="_blank" rel="noopener noreferrer"><span class="num">02</span><span><strong>Veja os dados JSON ↗</strong><small>Compare a interface visual com a resposta real da API.</small></span></a>
+          <a class="tour-step" href="https://github.com/Dhaniels1/biblioteca-api" target="_blank" rel="noopener noreferrer"><span class="num">03</span><span><strong>Conheça a implementação ↗</strong><small>Explore Controllers, Eloquent, autenticação e testes no GitHub.</small></span></a>
+        </div>
+        <details class="api-reference">
+          <summary>Quais endpoints estão disponíveis?</summary>
+          <p>Leituras públicas do catálogo:</p>
+          <code>GET /api/livros</code><code>GET /api/autores</code><code>GET /api/categorias</code>
+          <p>Criação, edição e exclusão exigem autenticação por token com Laravel Sanctum. Esta página é somente para consulta.</p>
+        </details>
+      </section>
 
       <section class="summary" aria-label="Indicadores do acervo">
         <div class="stat"><div><span class="stat-value" id="total-livros">—</span><span class="stat-label">Livros cadastrados</span></div><span class="stat-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="12" y="6" width="8" height="14" rx="1"/></svg></span></div>
