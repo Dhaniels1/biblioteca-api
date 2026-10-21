@@ -25,6 +25,10 @@ A aplicação disponibiliza CRUD de autores, categorias e livros, relacionamento
 
 > Acesse o catálogo visual em https://biblioteca-api-dhaniels1.onrender.com e as respostas JSON em https://biblioteca-api-dhaniels1.onrender.com/api/livros. O deploy, banco e migrations foram confirmados no Render.
 
+## Guia de demonstração
+
+Para apresentar o projeto a professores ou recrutadores, consulte o **[roteiro visual, o diagrama de funcionamento e as verificações sugeridas](docs/GUIA_DEMONSTRACAO.md)**.
+
 ## Requisitos
 
 - PHP 8.2+
